@@ -1,6 +1,10 @@
 package p1admin;
 
+import java.sql.SQLException;
+
 import javax.swing.DefaultListModel;
+
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 import p1admin.adminDB.FauxDBFacade;
 import p1admin.adminDB.GenericDBFacade;
@@ -10,12 +14,16 @@ import p1admin.model.Opcion;
 import p1admin.model.Pregunta;
 
 public class Main {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
 		// TODO Inicializar DataSource
-		
-		
-		// TODO Cambiar inicialización de fachada a BD añadiendo
-		// los parámetros que sean necesarios
+		ComboPooledDataSource ds = new ComboPooledDataSource();
+		ds.setJdbcUrl("jdbc:mysql://localhost/abdp1");
+		ds.setUser("Jorge");
+		ds.setPassword("jorge");
+		ds.setAcquireRetryAttempts(1);
+		ds.setAcquireRetryDelay(1);
+		ds.setBreakAfterAcquireFailure(true);
+
 		GenericDBFacade<Pregunta, Opcion> facade = new FauxDBFacade();
 		
 		DefaultListModel<Pregunta> model = new DefaultListModel<>();
@@ -25,5 +33,6 @@ public class Main {
 		ed.setVisible(true);
 		
 		// TODO: Cerrar pool de conexiones
+		ds.close();
 	}
 }

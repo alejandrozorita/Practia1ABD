@@ -3,6 +3,8 @@ package p1admin.adminDB;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import p1admin.model.Opcion;
 import p1admin.model.Pregunta;
 
@@ -20,6 +22,13 @@ public class DBFacade implements GenericDBFacade<Pregunta, Opcion> {
 
 	// TODO Si es necesario, añade el constructor que inicialice esos atributos.
 
+	private PreguntasMapper preguntaDS;
+	private OpcionMapper opcionDS;
+	
+	public DBFacade(DataSource ds){
+		this.opcionDS = new OpcionMapper(ds);
+		this.preguntaDS = new PreguntasMapper(ds);
+	}
 	/**
 	 * Inserta una pregunta en la base de datos.
 	 * 
@@ -36,6 +45,7 @@ public class DBFacade implements GenericDBFacade<Pregunta, Opcion> {
 	public void insertQuestion(Pregunta question) {
 		System.out.println("Insertar pregunta en BD: " + question);
 		// TODO Implementar
+		this.preguntaDS.insert(question);
 	}
 
 	/**
@@ -55,7 +65,7 @@ public class DBFacade implements GenericDBFacade<Pregunta, Opcion> {
 	public List<Pregunta> getAllQuestions() {
 		System.out.println("Obtener todas las preguntas de la BD");
 		// TODO Implementar
-		return new LinkedList<>();
+		return this.preguntaDS.getTodasPreguntas();
 	}
 
 	/**
@@ -77,7 +87,7 @@ public class DBFacade implements GenericDBFacade<Pregunta, Opcion> {
 	public List<Pregunta> findQuestionsContaining(String text) {
 		System.out.println("Búsqueda de preguntas que contienen: " + text);
 		// TODO implementar
-		return new LinkedList<>();
+		return this.preguntaDS.getQuestionsContaining(text);
 	}
 
 	/**
@@ -99,6 +109,7 @@ public class DBFacade implements GenericDBFacade<Pregunta, Opcion> {
 	public void updateQuestion(Pregunta question) {
 		System.out.println("Actualizar pregunta: " + question);
 		// TODO Implementar
+		this.preguntaDS.update(question);
 	}
 
 	/**
@@ -120,7 +131,7 @@ public class DBFacade implements GenericDBFacade<Pregunta, Opcion> {
 	public void updateAnswer(Pregunta question, Opcion answer) {
 		System.out.println("Actualizar opción " + answer);
 		// TODO Implementar
-
+		this.opcionDS.actualiza(answer);
 	}
 
 	/**
@@ -139,6 +150,8 @@ public class DBFacade implements GenericDBFacade<Pregunta, Opcion> {
 	public void deleteAnswer(Pregunta question, Opcion answer) {
 		System.out.println("Eliminar opción " + answer);
 		// TODO Implementar
+		answer.setPreguntaMadre(question);
+		this.opcionDS.delete(answer);
 	}
 
 	/**
@@ -158,6 +171,7 @@ public class DBFacade implements GenericDBFacade<Pregunta, Opcion> {
 	public void deleteQuestion(Pregunta question) {
 		System.out.println("Eliminar pregunta " + question);
 		// TODO Implementar
+		this.preguntaDS.delete(question);
 	}
 
 	/**
@@ -175,5 +189,6 @@ public class DBFacade implements GenericDBFacade<Pregunta, Opcion> {
 	public void insertAnswer(Pregunta question, Opcion answer) {
 		System.out.println("Insertar " + answer);
 		// TODO Implementar
+		this.opcionDS.insert(answer);
 	}
 }

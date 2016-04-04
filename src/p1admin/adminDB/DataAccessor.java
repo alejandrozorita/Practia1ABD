@@ -33,6 +33,42 @@ public class DataAccessor {
 		}
 		return null;
 	}
+	
+	
+	public Object updateRow(String tableName, String[] columna, Object[] values, String[] nombreKey, Object key) {
+		String sql = generateUpdateStatement(tableName, columna, values, nombreKey, key);
+		try (Connection con = ds.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+			for (int i = 0; i < values.length; i++) {
+				pst.setObject(i + 1, values[i]);
+			}
+			pst.executeUpdate();
+			ResultSet rs = pst.getGeneratedKeys();
+			if(rs.next()) {
+                return rs.getObject(1);
+            }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	public Object deleteRow(String tableName, String[] fields, Object[] values) {
+		String sql = generateInsertStatement(tableName, fields);
+		try (Connection con = ds.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+			for (int i = 0; i < values.length; i++) {
+				pst.setObject(i + 1, values[i]);
+			}
+			pst.executeUpdate();
+			ResultSet rs = pst.getGeneratedKeys();
+			if(rs.next()) {
+                return rs.getObject(1);
+            }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	private String generateInsertStatement(String tableName, String[] fields) {
 		String fieldList = String.join(",",fields);
@@ -41,6 +77,13 @@ public class DataAccessor {
 		String markList = String.join(",", marks);
 		return "INSERT INTO " + tableName + " (" + fieldList + ") VALUES (" + markList + ")";
 	}
+	
+
+	private String generateUpdateStatement(String tableName, String[] columna, Object valor, String[] nombreKey, Object key) {
+		return "UPDATE " + tableName + "SET " + columna + " = " + valor + " WHERE " + nombreKey + " = " + key;
+	}
+	
+	
 	 public boolean deleteRows (String tableName, String[] keys, Object[] keysVals) {
 	        String sql = getDeleteStatement(tableName, keys);
 	        try(Connection con = ds.getConnection();

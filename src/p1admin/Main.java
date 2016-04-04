@@ -18,8 +18,8 @@ public class Main {
 		// TODO Inicializar DataSource
 		ComboPooledDataSource ds = new ComboPooledDataSource();
 		ds.setJdbcUrl("jdbc:mysql://localhost/abdp1");
-		ds.setUser("Jorge");
-		ds.setPassword("jorge");
+		ds.setUser("AdminP1");
+		ds.setPassword("AdminP1");
 		ds.setAcquireRetryAttempts(1);
 		ds.setAcquireRetryDelay(1);
 		ds.setBreakAfterAcquireFailure(true);

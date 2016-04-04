@@ -8,8 +8,16 @@ public class Pregunta {
 	private String enunciado;
 	private List<Opcion> opciones;
 	
-	public Pregunta() {
+	private String texto;
+
+	public Pregunta(Integer id, String texto) {
+		this.id = id;
+		this.texto = texto;
 		opciones = new ArrayList<>();
+	}
+
+	public Pregunta() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public Integer getId() {

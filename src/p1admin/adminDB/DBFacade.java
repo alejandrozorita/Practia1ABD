@@ -1,6 +1,5 @@
 package p1admin.adminDB;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -109,7 +108,7 @@ public class DBFacade implements GenericDBFacade<Pregunta, Opcion> {
 	public void updateQuestion(Pregunta question) {
 		System.out.println("Actualizar pregunta: " + question);
 		// TODO Implementar
-		this.preguntaDS.update(question);
+		this.preguntaDS.actualiza(question);
 	}
 
 	/**
